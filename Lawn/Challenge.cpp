@@ -2791,7 +2791,9 @@ void Challenge::InitZombieWaves()
 		aList[ZOMBIE_FOOTBALL] = true;
 		aList[ZOMBIE_DANCER] = true;
 		aList[ZOMBIE_ZAMBONI] = true;
-		aList[ZOMBIE_BOBSLED] = true;
+		// can go off map and lose game
+		//aList[ZOMBIE_BOBSLED] = true;
+
 		aList[ZOMBIE_JACK_IN_THE_BOX] = true;
 		aList[ZOMBIE_DIGGER] = true;
 		aList[ZOMBIE_POGO] = true;
