@@ -3178,7 +3178,10 @@ void Challenge::WhackAZombieSpawning()
 		// 在不同阶段下出现路障、铁桶僵尸及出现二、三只僵尸的权重
 		const int aDoubleChance[6] = { 0, 30, 10, 10, 15, 18 };
 		const int aTripleChance[6] = { 0, 0, 0, 0, 10, 13 };
+		const int aDoorChance[6] = { 0, 0, 0, 10, 15, 15 };
+		const int aNewspChance[6] = { 0, 0, 0, 10, 15, 15 };
 		const int aPailChance[6] = { 0, 0, 0, 10, 15, 15 };
+		const int aVaulterChance[6] = { 0, 0, 30, 30, 30, 30 };
 		const int aConeChance[6] = { 0, 0, 30, 30, 30, 30 };
 		// 默认的僵尸数量为 1 只
 		int aZombieCount = 1;
@@ -3202,6 +3205,20 @@ void Challenge::WhackAZombieSpawning()
 		else if (aNumHit < aTripleChance[aPhase] + aDoubleChance[aPhase])
 		{
 			aZombieCount = 2;
+		}
+
+		// same chances, therefore separately
+		if (aTypeHit < aDoorChance[aPhase] && aZombieCount < 3)
+		{
+			aZombieType = ZOMBIE_DOOR;
+		}
+		else if (aTypeHit < aDoorChance[aPhase] + aNewspChance[aPhase])
+		{
+			aZombieType = ZOMBIE_POLEVAULTER;
+		}
+		else if (aTypeHit < aDoorChance[aPhase] + aVaulterChance[aPhase])
+		{
+			aZombieType = ZOMBIE_POLEVAULTER;
 		}
 
 		// 确定僵尸类型
@@ -3245,7 +3262,25 @@ void Challenge::WhackAZombieSpawning()
 
 			if (aIsFinalWave)
 			{
-				aZombieType = Rand(2) == 0 ? ZOMBIE_TRAFFIC_CONE : ZOMBIE_PAIL;
+				switch (Rand(5))
+				{
+					case 1:
+						aZombieType = ZOMBIE_TRAFFIC_CONE;
+						break;
+					case 2:
+						aZombieType = ZOMBIE_POLEVAULTER;
+						break;
+					case 3:
+						aZombieType = ZOMBIE_NEWSPAPER;
+						break;
+					case 4:
+						aZombieType = ZOMBIE_PAIL;
+						break;
+					case 5:
+						aZombieType = ZOMBIE_DOOR;
+						break;
+				}
+
 				aMaxSpeed = 2;
 			}
 
