@@ -8631,7 +8631,7 @@ bool Zombie::TrySpawnLevelAward()
         {
             ReportAchievement::GiveAchievement(mApp, AchievementId::FaceToFace, true);
         }
-        if (!mBoard->mHadPlantedNuts && mBoard->mLevel > 3) 
+        if ((!mBoard->mHadPlantedNuts && mBoard->mLevel > 3) && mBoard->StageIsNight()) 
         {
             ReportAchievement::GiveAchievement(mApp, AchievementId::MayNotContainNuts, true);
         }
