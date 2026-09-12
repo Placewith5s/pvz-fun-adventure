@@ -3178,11 +3178,11 @@ void Challenge::WhackAZombieSpawning()
 		// 在不同阶段下出现路障、铁桶僵尸及出现二、三只僵尸的权重
 		const int aDoubleChance[6] = { 0, 30, 10, 10, 15, 18 };
 		const int aTripleChance[6] = { 0, 0, 0, 0, 10, 13 };
-		const int aDoorChance[6] = { 0, 0, 0, 10, 15, 15 };
-		const int aNewspChance[6] = { 0, 0, 0, 10, 15, 15 };
-		const int aPailChance[6] = { 0, 0, 0, 10, 15, 15 };
-		const int aVaulterChance[6] = { 0, 0, 30, 30, 30, 30 };
-		const int aConeChance[6] = { 0, 0, 30, 30, 30, 30 };
+		const int aDoorChance[6] = { 0, 0, 0, 5, 8, 8 };
+		const int aNewspChance[6] = { 0, 0, 14, 14, 14, 14 };
+		const int aPailChance[6] = { 0, 0, 0, 5, 7, 7 };
+		const int aVaulterChance[6] = { 0, 0, 13, 13, 13, 13 };
+		const int aConeChance[6] = { 0, 0, 13, 13, 13, 13 };
 		// 默认的僵尸数量为 1 只
 		int aZombieCount = 1;
 		// 默认的僵尸类型为普通僵尸
@@ -3214,7 +3214,7 @@ void Challenge::WhackAZombieSpawning()
 		}
 		else if (aTypeHit < aDoorChance[aPhase] + aNewspChance[aPhase])
 		{
-			aZombieType = ZOMBIE_POLEVAULTER;
+			aZombieType = ZOMBIE_NEWSPAPER;
 		}
 		else if (aTypeHit < aDoorChance[aPhase] + aVaulterChance[aPhase])
 		{
