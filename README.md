@@ -1,5 +1,6 @@
-
 # stabledecompile
+
+An improved version of stabledecompile by InLiothixi.
 
 A Project focused in making modding both GOTY and OG possible, adding features and contents from different platforms of the Franchise, and bug fixes.
 
@@ -49,12 +50,12 @@ and download the C++ Build Tools.
 
 With your *legally owned copy* of Plants Vs. Zombies, **Copy the game's folder** where the `PlantsVsZombies.exe` is located and **paste it inside the stabledecompile folder** (worksplace)
 
-#### Note:
-The game's folder should have the `properties/` folder and the `main.pak` file. In the Steam version, the Plants Vs. Zombies folder has a launcher and the important files are stored in a subfolder.
-
-Only `Plants Vs Zombies` and `Plants Vs. Zombies` folder names are valid for the build script so you might want to rename them
-
-With all of these done, you should at least have these folders in your workspace:
+> [!NOTE]
+> The game's folder should have the `properties/` folder and the `main.pak` file. In the Steam version, the Plants Vs. Zombies folder has a launcher and the important files are stored in a subfolder.
+>
+> Only `Plants Vs Zombies` and `Plants Vs. Zombies` folder names are valid for the build script so you might want to rename them
+>
+> With all of these done, you should at least have these folders in your workspace:
 ```
 assets/
 bin/
@@ -68,12 +69,12 @@ SexyAppFramework/
 tools/
 ```
 
-#### Note:
-The dll files inside the `bin/` folder maybe corrupted (1 KB in size), if that is the case, you should redownload the `bin/` folder in this repository.
-
-After this confirming the `Plants Vs. Zombies/` folder is present and no DLL files are corrupted in the `bin/` folder, 
-
-**Open the the `PlantsVsZombies.sln` file** so you can proceed to the next step.
+> [!NOTE]
+> The dll files inside the `bin/` folder maybe corrupted (1 KB in size), if that is the case, you should redownload the `bin/` folder in this repository.
+>
+> After this confirming the `Plants Vs. Zombies/` folder is present and no DLL files are corrupted in the `bin/` folder, 
+>
+> **Open the the `PlantsVsZombies.sln` file** so you can proceed to the next step.
 
 ### 2. Choosing Configuration and Platform
 To determine what configuration and platform you are gonna build on you must consider these factors.
@@ -82,14 +83,14 @@ For development, you must use the `Debug` configuration. This configuration has 
 
 When deploying your mod to the general public, you must use `Release` configuration because it is optimized and it does not come with unwanted debugging tools.
 
-#### Note:
-Debug configurations have built-in exploits and tools. That is why you configure on Release because its built without unnecessary debug tools that may slow down the game or reveal exploits.
-
-
-||PvZ OG|PvZ GOTY|
-|---|---|---|
-|Development|Debug|DebugGOTY|
-|Deployment|Release|ReleaseGOTY|
+> [!NOTE]
+> Debug configurations have built-in exploits and tools. That is why you configure on Release because its built without unnecessary debug tools that may slow down the game or reveal exploits.
+>
+>
+> ||PvZ OG|PvZ GOTY|
+> |---|---|---|
+> |Development|Debug|DebugGOTY|
+> |Deployment|Release|ReleaseGOTY|
 
 You must choose the correct configuration; one that matches the version of your legal copy of Plants Vs. Zombies. There are content that does not exists on OG but does on GOTY.
 
@@ -113,8 +114,8 @@ Here is a quick look at it:
 #define _HAS_ZOMBATAR
 #define _HAS_UNLOCK
 // Unused or Restored
-//#define _HAS_LEVELSELECTOR 
-//#define _HAS_MORESCREEN
+#define _HAS_LEVELSELECTOR 
+#define _HAS_MORESCREEN
 #endif
 
 #ifdef _DEBUG
@@ -126,24 +127,24 @@ Here is a quick look at it:
 #define _ALLOW_RESOURCE_PACKS
 
 // Unused or Restored
-//#define _HAS_BLOOM_AND_DOOM_CONTENTS
+#define _HAS_BLOOM_AND_DOOM_CONTENTS
 #define _HAS_EXTENDED_MINIGAMES
-//#define _HAS_UNUSED_ACHIEVEMENTS
+#define _HAS_UNUSED_ACHIEVEMENTS
 
 //Ported from other editions
 #define _MOBILE_MINIGAMES
-//#define _DS_MINIGAMES
+#define _DS_MINIGAMES
 //#define _CONSOLE_MINIGAMES
-//#define _REPLANTED_SPEED_CONTROL
-//#define _HAS_NEW_GIGA_ZOMBIES
+#define _REPLANTED_SPEED_CONTROL
+#define _HAS_NEW_GIGA_ZOMBIES
 //#define _HAS_SCORE_SYSTEM
 
 // Quality Of Life
-//#define _HAS_HEALTHBAR_TOGGLE
+#define _HAS_HEALTHBAR_TOGGLE
 //#define _ALLOW_SWIPE
-//#define _HAS_GAMESELECTOR_SPOTLIGHT
-//#define _HAS_ANIMATED_WOOD_SIGN
-//#define _HAS_KERNELPULT_BUTTER_IDLE
+#define _HAS_GAMESELECTOR_SPOTLIGHT
+#define _HAS_ANIMATED_WOOD_SIGN
+#define _HAS_KERNELPULT_BUTTER_IDLE
 
 // Quirky stuff
 //#define _HAS_ROOF_SLOPE_ANGLE
@@ -153,16 +154,16 @@ Here is a quick look at it:
 //#define _SPLASH_SNOWPEA
 ```
 
-#### Note: 
-This preview may not be up-to-date with the current changes on the repository.
-
-You can toggle a feature on by removing the `//` (forward slashes) before `#define XXX`. It will enable the feature when you build the program.
-
-Example: `#define _HAS_HEALTHBAR_TOGGLE` defining this will make it so Health bars appear on Zombies when you press on TAB key
-
-If you do not want to include some feature, you should put `//` before `#define XXX`. That will disable the feature when you build the program.
-
-Example: `//#define _SHOW_OUTPUT_CONSOLE` defining this will prevent the Command Prompt from launching when you build with Debug configuration.
+> [!NOTE]
+> This preview may not be up-to-date with the current changes on the repository.
+>
+> You can toggle a feature on by removing the `//` (forward slashes) before `#define XXX`. It will enable the feature when you build the program.
+>
+> Example: `#define _HAS_HEALTHBAR_TOGGLE` defining this will make it so Health bars appear on Zombies when you press on TAB key
+>
+> If you do not want to include some feature, you should put `//` before `#define XXX`. That will disable the feature when you build the program.
+>
+> Example: `//#define _SHOW_OUTPUT_CONSOLE` defining this will prevent the Command Prompt from launching when you build with Debug configuration.
 
 ### 4. Building the Executable
 By clicking on **Local Windows Debugger** you automatically build the executable and once it completes the task, it will automatially open the Game by itself.
@@ -189,10 +190,11 @@ The files in the `assets/` folder will also be copied into the output folder.
 
 If you modify a file in `assets/` folder, the change will automatically be applied in the output folder. The same goes for when adding a new file.
 
-#### Note:
-*Deleting a file in the `assets/` will not delete the file existing from the output folder. You may want to delete the `build/[Your_Configuratio]_[Platform]/bin/` and build again or you can manually modify files inside the output folder.*
-
-*After it successfully builds the executable and it launches the game, if you get DLL related errors follow these steps:*
+> [!NOTE]
+> *Deleting a file in the `assets/` will not delete the file existing from the output folder. You may want to delete the `build/[Your_Configuratio]_[Platform]/bin/` and build
+> again or you can manually modify files inside the output folder.*
+>
+> *After it successfully builds the executable and it launches the game, if you get DLL related errors follow these steps:*
 
 #### Step 1:
 
@@ -233,14 +235,15 @@ If you add Images, Particles, Texts, and Sounds, you have to create `resources.x
 The path value on SetDefaults must start with `extension\\` for it to work.
 If you add Reanimations, you need to put them in compiled/reanim/ and the assets in reanim/
 
-#### Note:
-As of the x64-bit support, having the `.reanim` file inside `reanim\` folder is now required for every new reanim added. The same rule applies to trails and particles but in `particles\` folder (trails and particles share the same folder)
-
-Additionally, their compiled file should also exists on the `compiled/` folder. 
-
-Example `compiled\particles\SpikeSplat.xml.compiled`
-
-**This change applies to both x64 and Win32 platform! If you forgot to do this, it may fail to compile the file when you run the executable and errors may occur later**
+> [!NOTE]
+> As of the x64-bit support, having the `.reanim` file inside `reanim\` folder is now required for every new reanim added. The same rule applies to trails and particles but >
+> in `particles\` folder (trails and particles share the same folder)
+>
+> Additionally, their compiled file should also exists on the `compiled/` folder. 
+>
+> Example `compiled\particles\SpikeSplat.xml.compiled`
+>
+> **This change applies to both x64 and Win32 platform! If you forgot to do this, it may fail to compile the file when you run the executable and errors may occur later**
 
 ### Adding Resource Packs
 
@@ -265,22 +268,61 @@ with
 <SetDefaults path="resourcepack/xxx" idprefix="..." />
 ```
 
-#### Note:
-
-This is how the game look for files in order. **(Highest to Least Priority)**
+> [!NOTE]
+>
+> This is how the game look for files in order. **(Highest to Least Priority)**
 ```
 resourcepack\ (if enabled)
 extension\
 dependency\
 --- (this means it is either outside or inside main.pak)
 ```
-*While browsing, if the program finds a file in a folder from this list, it will use that and will not continue looking in other folders. If you want to replace a certain asset then putting it on `extension/` will work i.e. replacing the `logo.png`. This is how resourcepack works in the mod*
+> *While browsing, if the program finds a file in a folder from this list, it will use that and will not continue looking in other folders. If you want to replace a certain asset then putting it on `extension/` will work i.e. replacing the `logo.png`. This is how resourcepack works in the mod*
 
+### Changing Plant Stats
+
+Go to the Plant.cpp file and get past the #include lines. If you are using Visual Studio, the file is located inside Board Source.
+
+This here is what the gPlantDefs table uses:
+
+```cpp
+class PlantDefinition
+{
+public:
+    SeedType                mSeedType;          //+0x0
+    Image**                 mPlantImage;        //+0x4
+    ReanimationType         mReanimationType;   //+0x8
+    int                     mPacketIndex;       //+0xC
+    int                     mSeedCost;          //+0x10
+    int                     mRefreshTime;       //+0x14
+    PlantSubClass           mSubClass;          //+0x18
+    int                     mLaunchRate;        //+0x1C
+    const SexyChar*         mPlantName;         //+0x20
+};
+extern PlantDefinition gPlantDefs[SeedType::NUM_SEED_TYPES];
+```
+
+The third (int) non-decimal number/s is the plant's recharge time and the final (int) non-decimal number/s is basically fire rate.
+
+### Modding Tips
+Use Ctrl + Shift + F to find things from all matching files quickly and Ctrl + F to find things from the selected file. There are going to be lots of copy paste for similar plants, zombies, and levels
+
+You should note down which plants are given in conveyor-belt levels and which zombies appear in the newly added levels. These are not easy to fully remember.
+
+If you are used to the command Ctrl + D: go to Tools > Options > Environment > Keyboard > Keyboard and change the "Appl..." dropdown value to something like Visual Studio Code.
+
+- New enum values should come last, unless you are adding new zombies
+- When adding new zombies not viewable in the almanac book, the new enum values should come just before ZOMBIE_REDEYE_GARGANTUAR
+
+Again, this is from my own experience. If you know where the hardcoded values live, you can ignore these tips.
 
 # Development Team
 
 ### Lead Programmer
 - InLiothixie
+
+### Fork Programmer
+- Placewith5s
 
 ### Artists
 - Andreko

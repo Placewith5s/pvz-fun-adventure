@@ -108,9 +108,7 @@ struct BungeeDropGrid
 
 class Board : public Widget, public ButtonListener
 {
-	enum SpeedMod {
-		SPEED_SLOWMO,  
-		SPEED_SLOW,       
+	enum SpeedMod {    
 		SPEED_NORMAL,     
 		SPEED_FAST,      
 		SPEED_VERY_FAST,  
@@ -135,8 +133,8 @@ public:
 	SeedBank*						mSeedBank;												//+0x144
 	GameButton*						mMenuButton;											//+0x148
 #ifdef _REPLANTED_SPEED_CONTROL
-	NewLawnButton*					mSlowdownButton;
-	NewLawnButton*					mPauseButton;
+	//NewLawnButton*					mSlowdownButton;
+	//NewLawnButton*					mPauseButton;
 	NewLawnButton*					mSpeedupButton;
 #endif
 	GameButton*						mStoreButton;											//+0x14C

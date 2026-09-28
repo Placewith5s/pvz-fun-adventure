@@ -190,19 +190,19 @@ Board::Board(LawnApp* theApp)
 	mMenuButton->mDrawStoneButton = true;
 	mTicks = 0;
 #ifdef _REPLANTED_SPEED_CONTROL
-		mSlowdownButton = MakeNewButton(Board::SLOWDOWN, this, "", nullptr, Sexy::IMAGE_SLOWDOWN_BUTTON, Sexy::IMAGE_SLOWDOWN_BUTTON_PRESSED, Sexy::IMAGE_SLOWDOWN_BUTTON_PRESSED);
-		mSlowdownButton->Resize(mApp->mDDInterface->mWideScreenOffsetX, mApp->mDDInterface->mWideScreenOffsetY, Sexy::IMAGE_SLOWDOWN_BUTTON->GetWidth(), Sexy::IMAGE_SLOWDOWN_BUTTON->GetHeight());
-		mSlowdownButton->mBtnNoDraw = true;
-		mSlowdownButton->mDoFinger = true;
-		mSlowdownButton->mTranslateX = 0;
-		mSlowdownButton->mTranslateY = 0;
+		//mSlowdownButton = MakeNewButton(Board::SLOWDOWN, this, "", nullptr, Sexy::IMAGE_SLOWDOWN_BUTTON, Sexy::IMAGE_SLOWDOWN_BUTTON_PRESSED, Sexy::IMAGE_SLOWDOWN_BUTTON_PRESSED);
+		//mSlowdownButton->Resize(mApp->mDDInterface->mWideScreenOffsetX, mApp->mDDInterface->mWideScreenOffsetY, Sexy::IMAGE_SLOWDOWN_BUTTON->GetWidth(), Sexy::IMAGE_SLOWDOWN_BUTTON->GetHeight());
+		//mSlowdownButton->mBtnNoDraw = true;
+		//mSlowdownButton->mDoFinger = true;
+		//mSlowdownButton->mTranslateX = 0;
+		//mSlowdownButton->mTranslateY = 0;
 
-		mPauseButton = MakeNewButton(Board::PAUSE, this, "", nullptr, Sexy::IMAGE_PAUSE_BUTTON, Sexy::IMAGE_PAUSE_BUTTON_PRESSED, Sexy::IMAGE_PAUSE_BUTTON_PRESSED);
-		mPauseButton->Resize(mApp->mDDInterface->mWideScreenOffsetX, mApp->mDDInterface->mWideScreenOffsetY, Sexy::IMAGE_PAUSE_BUTTON->GetWidth(), Sexy::IMAGE_PAUSE_BUTTON->GetHeight());
-		mPauseButton->mBtnNoDraw = true;
-		mPauseButton->mDoFinger = true;
-		mPauseButton->mTranslateX = 0;
-		mPauseButton->mTranslateY = 0;
+		//mPauseButton = MakeNewButton(Board::PAUSE, this, "", nullptr, Sexy::IMAGE_PAUSE_BUTTON, Sexy::IMAGE_PAUSE_BUTTON_PRESSED, Sexy::IMAGE_PAUSE_BUTTON_PRESSED);
+		//mPauseButton->Resize(mApp->mDDInterface->mWideScreenOffsetX, mApp->mDDInterface->mWideScreenOffsetY, Sexy::IMAGE_PAUSE_BUTTON->GetWidth(), Sexy::IMAGE_PAUSE_BUTTON->GetHeight());
+		//mPauseButton->mBtnNoDraw = true;
+		//mPauseButton->mDoFinger = true;
+		//mPauseButton->mTranslateX = 0;
+		//mPauseButton->mTranslateY = 0;
 
 		mSpeedupButton = MakeNewButton(Board::SPEEDUP, this, "", nullptr, Sexy::IMAGE_SPEEDUP_BUTTON, Sexy::IMAGE_SPEEDUP_BUTTON_PRESSED, Sexy::IMAGE_SPEEDUP_BUTTON_PRESSED);
 		mSpeedupButton->Resize(mApp->mDDInterface->mWideScreenOffsetX, mApp->mDDInterface->mWideScreenOffsetY, Sexy::IMAGE_SPEEDUP_BUTTON->GetWidth(), Sexy::IMAGE_SPEEDUP_BUTTON->GetHeight());
@@ -298,14 +298,14 @@ Board::~Board()
 		delete mMenuButton;
 	}
 #ifdef _REPLANTED_SPEED_CONTROL
-	if (mSlowdownButton)
-	{
-		delete mSlowdownButton;
-	}
-	if (mPauseButton)
-	{
-		delete mPauseButton;
-	}
+	//if (mSlowdownButton)
+	//{
+	//	delete mSlowdownButton;
+	//}
+	//if (mPauseButton)
+	//{
+	//	delete mPauseButton;
+	//}
 	if (mSpeedupButton)
 	{
 		delete mSpeedupButton;
@@ -3560,7 +3560,8 @@ void Board::UpdateCursor()
 {
 	if (mApp->IsScreenSaver() || mWidgetManager == NULL|| mWidgetManager->mOverWidget == NULL
 #ifdef _REPLANTED_SPEED_CONTROL
-		|| mSlowdownButton->mIsOver || mPauseButton->mIsOver || mSpeedupButton->mIsOver
+		|| mSpeedupButton->mIsOver
+		//|| mSlowdownButton->mIsOver || mPauseButton->mIsOver || mSpeedupButton->mIsOver
 #endif
 		)return;
 
@@ -5539,12 +5540,12 @@ void Board::Pause(bool thePause)
 			mApp->mMusic->mMusicInterface = gSexyAppBase->mMusicInterface;
 		mApp->mMusic->GameMusicPause(thePause);
 
-#ifdef _REPLANTED_SPEED_CONTROL
-		if (!thePause)
-		{
-			mPauseButton->mButtonImage = Sexy::IMAGE_PAUSE_BUTTON;
-		}
-#endif
+//#ifdef _REPLANTED_SPEED_CONTROL
+//		if (!thePause)
+//		{
+//			mPauseButton->mButtonImage = Sexy::IMAGE_PAUSE_BUTTON;
+//		}
+//#endif
 	}
 }
 
@@ -6891,39 +6892,63 @@ void Board::Update()
 
 	if (mAllowSpeedMod && !mLevelAwardSpawned && mApp->mGameScene == GameScenes::SCENE_PLAYING)
 	{
-		switch (mSpeedMod)
+		if (gSexyAppBase->mIsHalfspeed)
 		{
-		case SpeedMod::SPEED_SLOWMO:
-			++mSlowMoCounter;
-			if (mSlowMoCounter < 4)
-				aUpdateCount = 0;
-			else
-				mSlowMoCounter = 0;
-			break;
+			switch (mSpeedMod)
+			{
+				case SpeedMod::SPEED_NORMAL:
+					if (mTicks % 2 == 0)
+					{
+						aUpdateCount = 1;
+					}
+					else {
+						aUpdateCount = 0;
+					}
+					break;
+				case SpeedMod::SPEED_FAST:
+					if (mTicks % 5 == 0)
+					{
+						aUpdateCount = 0;
+					}
+					else
+					{
+						aUpdateCount = 1;
+					}
+					break;
+				case SpeedMod::SPEED_VERY_FAST:
+					aUpdateCount = 1;
+					break;
+				case SpeedMod::SPEED_SONIC:
+					if (mTicks % 10 < 3)
+					{
+						aUpdateCount = 2;
+					}
+					else {
+						aUpdateCount = 1;
+					}
+					break;
+			}
+		}
+		else
+		{
+			switch (mSpeedMod)
+			{
+			case SpeedMod::SPEED_NORMAL:
+				aUpdateCount = 1;
+				break;
 
-		case SpeedMod::SPEED_SLOW:
-			++mSlowMoCounter;
-			if (mSlowMoCounter < 2)
-				aUpdateCount = 0;
-			else
-				mSlowMoCounter = 0;
-			break;
+			case SpeedMod::SPEED_FAST:
+				aUpdateCount = 1; // 1.5x
+				break;
 
-		case SpeedMod::SPEED_NORMAL:
-			aUpdateCount = 1;
-			break;
+			case SpeedMod::SPEED_VERY_FAST:
+				aUpdateCount = 2; // 2.0x
+				break;
 
-		case SpeedMod::SPEED_FAST:
-			aUpdateCount = 1; // 1.5x
-			break;
-
-		case SpeedMod::SPEED_VERY_FAST:
-			aUpdateCount = 2; // 2.0x
-			break;
-
-		case SpeedMod::SPEED_SONIC:
-			aUpdateCount = 2; // 2.5x
-			break;
+			case SpeedMod::SPEED_SONIC:
+				aUpdateCount = 2; // 2.5x
+				break;
+			}
 		}
 
 		if ((mTicks & 1) == 0 && (mSpeedMod == SpeedMod::SPEED_FAST || mSpeedMod == SpeedMod::SPEED_SONIC))
@@ -7988,15 +8013,27 @@ void Board::DrawLevel(Graphics* g)
 #ifdef _REPLANTED_SPEED_CONTROL
 float Board::GetSpeedValue(SpeedMod theMod)
 {
-	switch (theMod)
-	{
-	case SpeedMod::SPEED_SLOWMO:    return 0.25f;
-	case SpeedMod::SPEED_SLOW:      return 0.5f;
-	case SpeedMod::SPEED_FAST:      return 1.5f;
-	case SpeedMod::SPEED_VERY_FAST: return 2.0f;
-	case SpeedMod::SPEED_SONIC:     return 2.5f;
-	default:              return 1.0f;
-	}
+	float result = 1.0f;
+
+	if (gSexyAppBase->mIsHalfspeed)
+		switch (theMod)
+		{
+			case SpeedMod::SPEED_FAST:      result = 0.8f; break;
+			case SpeedMod::SPEED_VERY_FAST: result = 1.0f; break;
+			case SpeedMod::SPEED_SONIC:     result = 1.3f; break;
+			default:              result = 0.5f; break;
+		}
+	else {
+		switch (theMod)
+		{
+			case SpeedMod::SPEED_FAST:      result = 1.5f; break;
+			case SpeedMod::SPEED_VERY_FAST: result = 2.0f; break;
+			case SpeedMod::SPEED_SONIC:     result = 2.5f; break;
+			default:              result = 1.0f; break;
+		}
+	} 
+
+	return result;
 }
 
 SexyString Board::GetSpeedString()
@@ -8039,26 +8076,26 @@ void Board::DrawSpeed(Graphics* g)
 	mSpeedupButton->mX = aPosX - aStrWidth - 12 - Sexy::IMAGE_SPEEDUP_BUTTON->GetWidth() + mApp->mDDInterface->mWideScreenOffsetX;
 	mSpeedupButton->mY = aPosY - fontHeight / 2 - 4 + mApp->mDDInterface->mWideScreenOffsetY;
 
-	mSlowdownButton->mButtonImage = mSpeedMod < SpeedMod::SPEED_NORMAL ? IMAGE_SLOWDOWN_BUTTON_PRESSED : IMAGE_SLOWDOWN_BUTTON;
+	//mSlowdownButton->mButtonImage = mSpeedMod < SpeedMod::SPEED_NORMAL ? IMAGE_SLOWDOWN_BUTTON_PRESSED : IMAGE_SLOWDOWN_BUTTON;
 	mSpeedupButton->mButtonImage = mSpeedMod > SpeedMod::SPEED_NORMAL ? IMAGE_SPEEDUP_BUTTON_PRESSED : IMAGE_SPEEDUP_BUTTON;
 
-	mPauseButton->mX = mSpeedupButton->mX - Sexy::IMAGE_SPEEDUP_BUTTON->GetWidth() - 4 ;
-	mPauseButton->mY = mSpeedupButton->mY;
+	//mPauseButton->mX = mSpeedupButton->mX - Sexy::IMAGE_SPEEDUP_BUTTON->GetWidth() - 4 ;
+	//mPauseButton->mY = mSpeedupButton->mY;
 
-	mSlowdownButton->mX = mPauseButton->mX - Sexy::IMAGE_SLOWDOWN_BUTTON->GetWidth() - 4;
-	mSlowdownButton->mY = mPauseButton->mY;
+	//mSlowdownButton->mX = mPauseButton->mX - Sexy::IMAGE_SLOWDOWN_BUTTON->GetWidth() - 4;
+	//mSlowdownButton->mY = mPauseButton->mY;
 
-	Graphics gSlowdownButton(*g);
-	gSlowdownButton.mTransX = mSlowdownButton->mX;
-	gSlowdownButton.mTransY = mSlowdownButton->mY;
-	gSlowdownButton.mTransX += TodAnimateCurve(12, 0, mShakeCounter, 0, mShakeAmountX, TodCurves::CURVE_BOUNCE);
-	gSlowdownButton.mTransY += TodAnimateCurve(12, 0, mShakeCounter, 0, mShakeAmountY, TodCurves::CURVE_BOUNCE);
+	//Graphics gSlowdownButton(*g);
+	//gSlowdownButton.mTransX = mSlowdownButton->mX;
+	//gSlowdownButton.mTransY = mSlowdownButton->mY;
+	//gSlowdownButton.mTransX += TodAnimateCurve(12, 0, mShakeCounter, 0, mShakeAmountX, TodCurves::CURVE_BOUNCE);
+	//gSlowdownButton.mTransY += TodAnimateCurve(12, 0, mShakeCounter, 0, mShakeAmountY, TodCurves::CURVE_BOUNCE);
 
-	Graphics gPauseButton(*g);
+	/*Graphics gPauseButton(*g);
 	gPauseButton.mTransX = mPauseButton->mX;
 	gPauseButton.mTransY = mPauseButton->mY;
 	gPauseButton.mTransX += TodAnimateCurve(12, 0, mShakeCounter, 0, mShakeAmountX, TodCurves::CURVE_BOUNCE);
-	gPauseButton.mTransY += TodAnimateCurve(12, 0, mShakeCounter, 0, mShakeAmountY, TodCurves::CURVE_BOUNCE);
+	gPauseButton.mTransY += TodAnimateCurve(12, 0, mShakeCounter, 0, mShakeAmountY, TodCurves::CURVE_BOUNCE);*/
 
 	Graphics gSpeedupButton(*g);
 	gSpeedupButton.mTransX = mSpeedupButton->mX;
@@ -8066,16 +8103,15 @@ void Board::DrawSpeed(Graphics* g)
 	gSpeedupButton.mTransX += TodAnimateCurve(12, 0, mShakeCounter, 0, mShakeAmountX, TodCurves::CURVE_BOUNCE);
 	gSpeedupButton.mTransY += TodAnimateCurve(12, 0, mShakeCounter, 0, mShakeAmountY, TodCurves::CURVE_BOUNCE);
 
-	mSlowdownButton->SetDisabled(mSpeedMod == SpeedMod::SPEED_SLOWMO
 #ifndef _DEBUG
 		|| mSpeedMod <= SpeedMod::SPEED_NORMAL
 #endif
-	);
-	mSpeedupButton->SetDisabled(mSpeedMod == SpeedMod::SPEED_SONIC);
+	;
+	//mSpeedupButton->SetDisabled(mSpeedMod == SpeedMod::SPEED_SONIC);
 
-	if (!mSlowdownButton->mDisabled)
-		mSlowdownButton->Render(&gSlowdownButton);
-	mPauseButton->Render(&gPauseButton);
+	//if (!mSlowdownButton->mDisabled)
+	//	mSlowdownButton->Render(&gSlowdownButton);
+	//mPauseButton->Render(&gPauseButton);
 	if (!mSpeedupButton->mDisabled)
 		mSpeedupButton->Render(&gSpeedupButton);
 
@@ -9856,27 +9892,44 @@ void Board::KeyChar(SexyChar theChar)
 	{
 		if (theChar == 'q')
 		{
-			mPrevSpeedMod = mSpeedMod;
-			if (mSpeedMod > SpeedMod::SPEED_SLOWMO)
-				mSpeedMod = static_cast<SpeedMod>(mSpeedMod - 1);
+			//mPrevSpeedMod = mSpeedMod;
 
-			if (mPrevSpeedMod != mSpeedMod)
+			if (mSpeedMod <= SpeedMod::SPEED_SONIC &&
+				mSpeedMod >= SpeedMod::SPEED_NORMAL)
 			{
+				mSpeedMod = static_cast<SpeedMod>(mSpeedMod - 1);
 				mApp->PlayFoley(FoleyType::FOLEY_REVERSE_WAKEUP);
 				mQECounter = 35;
 			}
+
+			//if (mPrevSpeedMod != mSpeedMod)
+			//{
+			//	mApp->PlayFoley(FoleyType::FOLEY_REVERSE_WAKEUP);
+			//	mQECounter = 35;
+			//}
 		}
 		if (theChar == 'e')
 		{
-			mPrevSpeedMod = mSpeedMod;
-			if (mSpeedMod < SpeedMod::SPEED_SONIC)
-				mSpeedMod = static_cast<SpeedMod>(mSpeedMod + 1);
+			//mPrevSpeedMod = mSpeedMod;
 
-			if (mPrevSpeedMod != mSpeedMod)	
+			if (mSpeedMod < SpeedMod::SPEED_SONIC)
 			{
+				mSpeedMod = static_cast<SpeedMod>(mSpeedMod + 1);
 				mApp->PlayFoley(FoleyType::FOLEY_WAKEUP);
 				mQECounter = 35;
 			}
+			else if (mSpeedMod == SpeedMod::SPEED_SONIC)
+			{
+				mSpeedMod = static_cast<SpeedMod>(SPEED_NORMAL);
+				mApp->PlayFoley(FoleyType::FOLEY_REVERSE_WAKEUP);
+				mQECounter = 35;
+			}
+
+			//if (mPrevSpeedMod != mSpeedMod)	
+			//{
+			//	mApp->PlayFoley(FoleyType::FOLEY_WAKEUP);
+			//	mQECounter = 35;
+			//}
 		}
 	}
 #endif
@@ -12180,8 +12233,6 @@ void Board::AddedToManager(WidgetManager* theWidgetManager)
 {
 	Widget::AddedToManager(theWidgetManager);
 #ifdef _REPLANTED_SPEED_CONTROL
-	theWidgetManager->AddWidget(mSlowdownButton);
-	theWidgetManager->AddWidget(mPauseButton);
 	theWidgetManager->AddWidget(mSpeedupButton);
 #endif
 }
@@ -12190,8 +12241,6 @@ void Board::RemovedFromManager(WidgetManager* theWidgetManager)
 {
 	Widget::RemovedFromManager(theWidgetManager);
 #ifdef _REPLANTED_SPEED_CONTROL
-	theWidgetManager->RemoveWidget(mSlowdownButton);
-	theWidgetManager->RemoveWidget(mPauseButton);
 	theWidgetManager->RemoveWidget(mSpeedupButton);
 #endif
 }
@@ -12199,35 +12248,51 @@ void Board::RemovedFromManager(WidgetManager* theWidgetManager)
 void Board::ButtonDepress(int theId)
 {
 #ifdef _REPLANTED_SPEED_CONTROL
-	if (theId == Board::SLOWDOWN)
+	if (theId == Board::SPEEDUP)
 	{
-		mPrevSpeedMod = mSpeedMod;
-		if (mSpeedMod > SpeedMod::SPEED_SLOWMO)
-			mSpeedMod = static_cast<SpeedMod>(mSpeedMod - 1);
+		//mPrevSpeedMod = mSpeedMod;
+		//static bool is_reverse = false;
 
-		if (mPrevSpeedMod != mSpeedMod)
-		{
-			mApp->PlayFoley(FoleyType::FOLEY_REVERSE_WAKEUP);
-			mQECounter = 35;
-		}
-	}
-	else if (theId == Board::PAUSE)
-	{
-		mPauseButton->mButtonImage = Sexy::IMAGE_PAUSE_BUTTON_PRESSED;
-		mApp->PlaySample(Sexy::SOUND_PAUSE);
-		mApp->DoPauseDialog();
-	}
-	else if (theId == Board::SPEEDUP)
-	{
-		mPrevSpeedMod = mSpeedMod;
 		if (mSpeedMod < SpeedMod::SPEED_SONIC)
-			mSpeedMod = static_cast<SpeedMod>(mSpeedMod + 1);
-
-		if (mPrevSpeedMod != mSpeedMod)
 		{
+			mSpeedMod = static_cast<SpeedMod>(mSpeedMod + 1);
 			mApp->PlayFoley(FoleyType::FOLEY_WAKEUP);
 			mQECounter = 35;
 		}
+		else if (mSpeedMod == SpeedMod::SPEED_SONIC)
+		{
+			mSpeedMod = static_cast<SpeedMod>(SPEED_NORMAL);
+			mApp->PlayFoley(FoleyType::FOLEY_REVERSE_WAKEUP);
+			mQECounter = 35;
+		}
+
+		//if (!is_reverse && mSpeedMod < SpeedMod::SPEED_SONIC)
+		//{
+		//	mSpeedMod = static_cast<SpeedMod>(mSpeedMod + 1);
+		//	mApp->PlayFoley(FoleyType::FOLEY_WAKEUP);
+		//	mQECounter = 35;
+		//}
+		//else if (is_reverse && mSpeedMod != SPEED_NORMAL)
+		//{
+		//	mSpeedMod = static_cast<SpeedMod>(mSpeedMod - 1);
+		//	mApp->PlayFoley(FoleyType::FOLEY_REVERSE_WAKEUP);
+		//	mQECounter = 35;
+		//}
+
+		//if (!is_reverse && mSpeedMod == SpeedMod::SPEED_SONIC)
+		//{
+		//	is_reverse = true;
+		//}
+		//else if (is_reverse && mSpeedMod == SPEED_NORMAL)
+		//{
+		//	is_reverse = false;
+		//}
+
+		//if (mPrevSpeedMod != mSpeedMod)
+		//{
+		//	mApp->PlayFoley(FoleyType::FOLEY_WAKEUP);
+		//	mQECounter = 35;
+		//}
 	}
 #endif
 }

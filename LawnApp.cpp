@@ -1928,10 +1928,14 @@ bool LawnApp::KillNewOptionsDialog()
 
 	bool wantWindowed = !aNewOptionsDialog->mFullscreenCheckbox->IsChecked();
 	//bool want3D = aNewOptionsDialog->mHardwareAccelerationCheckbox->IsChecked();
+	bool wantHalfspeed = aNewOptionsDialog->mHalfspeedCheckbox->IsChecked();
+
 	mEnableVsync = aNewOptionsDialog->mHardwareAccelerationCheckbox->IsChecked();
+
 	RegistryWriteBoolean(_S("EnableVsync"), mEnableVsync);
 	SDL_SetRenderVSync(mSDLRenderer, mEnableVsync);
 	SwitchScreenMode(wantWindowed, true, false);
+	SwitchSpeedMultiplier(wantHalfspeed);
 
 	KillDialog(Dialogs::DIALOG_NEWOPTIONS);
 	ClearUpdateBacklog();
@@ -4553,7 +4557,10 @@ int LawnApp::GetNumTrophies(ChallengePage thePage)
 //0x455C20
 int LawnApp::TrophiesNeedForGoldSunflower()
 {
-	return 48 - GetNumTrophies(CHALLENGE_PAGE_SURVIVAL) - GetNumTrophies(CHALLENGE_PAGE_CHALLENGE) - GetNumTrophies(CHALLENGE_PAGE_PUZZLE);
+	// 10 survival
+	// 20 minigames
+	// 23 puzzles (5 last stand puzzles)
+	return 53 - GetNumTrophies(CHALLENGE_PAGE_SURVIVAL) - GetNumTrophies(CHALLENGE_PAGE_CHALLENGE) - GetNumTrophies(CHALLENGE_PAGE_PUZZLE) - GetNumTrophies(CHALLENGE_PAGE_LAST_STAND);
 }
 
 //0x455C50
@@ -4710,6 +4717,17 @@ void LawnApp::SwitchScreenMode(bool wantWindowed, bool is3d, bool force)
 	if (aNewOptionsDialog)
 	{
 		aNewOptionsDialog->mFullscreenCheckbox->SetChecked(!mIsWindowed);
+	}
+}
+
+void LawnApp::SwitchSpeedMultiplier(bool wantHalfspeed)
+{
+	mIsHalfspeed = wantHalfspeed;
+
+	NewOptionsDialog* aNewOptionsDialog = (NewOptionsDialog*)GetDialog(Dialogs::DIALOG_NEWOPTIONS);
+	if (aNewOptionsDialog)
+	{
+		aNewOptionsDialog->mHalfspeedCheckbox->SetChecked(mIsHalfspeed);
 	}
 }
 
