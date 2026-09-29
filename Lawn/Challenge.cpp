@@ -3215,13 +3215,13 @@ void Challenge::WhackAZombieSpawning()
 		// 判断是否为最后一波
 		bool aIsFinalWave = mBoard->mCurrentWave == mBoard->mNumWaves;
 
-		if (mBoard->mCurrentWave >= mBoard->mNumWaves / 2)
-		{
-			aZombieType = ZOMBIE_POLEVAULTER;
-		}
-		else if (mBoard->mCurrentWave >= mBoard->mNumWaves / 1.5)
+		if (mBoard->mCurrentWave >= mBoard->mNumWaves / 1.5)
 		{
 			aZombieType = ZOMBIE_NEWSPAPER;
+		}
+		else if (mBoard->mCurrentWave >= mBoard->mNumWaves / 2)
+		{
+			aZombieType = ZOMBIE_POLEVAULTER;
 		}
 
 		// 确定僵尸数量
