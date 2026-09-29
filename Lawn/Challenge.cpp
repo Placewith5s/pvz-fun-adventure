@@ -3198,13 +3198,13 @@ void Challenge::WhackAZombieSpawning()
 		// 根据当前波数计算当前处于的阶段
 		int aPhase = ClampInt((mBoard->mCurrentWave - 1) * 6 / 12, 0, 5);
 		// 在不同阶段下出现路障、铁桶僵尸及出现二、三只僵尸的权重
-		const int aDoubleChance[6] = { 0, 30, 10, 10, 15, 18 };
-		const int aTripleChance[6] = { 0, 0, 0, 0, 10, 13 };
+		const int aDoubleChance[6] = { 0, 30, 20, 20, 30, 36 };
+		const int aTripleChance[6] = { 0, 0, 0, 0, 20, 26 };
 		const int aDoorChance[6] = { 0, 0, 0, 10, 15, 15 };
-		const int aNewspChance[6] = { 0, 0, 30, 30, 30, 30 };
-		const int aPailChance[6] = { 0, 0, 0, 10, 15, 15 };
-		const int aVaulterChance[6] = { 0, 0, 30, 30, 30, 30 };
-		const int aConeChance[6] = { 0, 0, 30, 30, 30, 30 };
+		//const int aNewspChance[6] = { 0, 0, 58, 58, 58, 58 };
+		const int aPailChance[6] = { 0, 0, 0, 20, 30, 30 };
+		//const int aVaulterChance[6] = { 0, 0, 59, 59, 59, 59 };
+		const int aConeChance[6] = { 0, 0, 60, 60, 60, 60 };
 		// 默认的僵尸数量为 1 只
 		int aZombieCount = 1;
 		// 默认的僵尸类型为普通僵尸
@@ -3214,6 +3214,15 @@ void Challenge::WhackAZombieSpawning()
 		int aTypeHit = Rand(100);
 		// 判断是否为最后一波
 		bool aIsFinalWave = mBoard->mCurrentWave == mBoard->mNumWaves;
+
+		if (mBoard->mCurrentWave >= mBoard->mNumWaves / 2)
+		{
+			aZombieType = ZOMBIE_POLEVAULTER;
+		}
+		else if (mBoard->mCurrentWave >= mBoard->mNumWaves / 1.5)
+		{
+			aZombieType = ZOMBIE_NEWSPAPER;
+		}
 
 		// 确定僵尸数量
 		if (aIsFinalWave)
@@ -3229,22 +3238,12 @@ void Challenge::WhackAZombieSpawning()
 			aZombieCount = 2;
 		}
 
-		// same chances, therefore separately
 		if (aTypeHit < aDoorChance[aPhase] && aZombieCount < 3)
 		{
 			aZombieType = ZOMBIE_DOOR;
 		}
-		else if (aTypeHit < aDoorChance[aPhase] + aNewspChance[aPhase])
-		{
-			aZombieType = ZOMBIE_NEWSPAPER;
-		}
-		else if (aTypeHit < aDoorChance[aPhase] + aVaulterChance[aPhase])
-		{
-			aZombieType = ZOMBIE_POLEVAULTER;
-		}
-
 		// 确定僵尸类型
-		if (aTypeHit < aPailChance[aPhase] && aZombieCount < 3)
+		else if (aTypeHit < aPailChance[aPhase] && aZombieCount < 3)
 		{
 			aZombieType = ZOMBIE_PAIL;
 		}
@@ -3252,6 +3251,14 @@ void Challenge::WhackAZombieSpawning()
 		{
 			aZombieType = ZOMBIE_TRAFFIC_CONE;
 		}
+		//else if (aTypeHit < aPailChance[aPhase] + aNewspChance[aPhase])
+		//{
+		//	aZombieType = ZOMBIE_NEWSPAPER;
+		//}
+		//else if (aTypeHit < aPailChance[aPhase] + aVaulterChance[aPhase])
+		//{
+		//	aZombieType = ZOMBIE_POLEVAULTER;
+		//}
 
 		TodWeightedArray<GridItem*> aGridPicks[MAX_GRAVE_STONES];
 		int aGridPicksCount = 0;
@@ -3284,21 +3291,26 @@ void Challenge::WhackAZombieSpawning()
 
 			if (aIsFinalWave)
 			{
-				switch (Rand(5))
+				switch (Rand(10))
 				{
 					case 1:
+					case 2:
 						aZombieType = ZOMBIE_TRAFFIC_CONE;
 						break;
-					case 2:
+					case 3:
+					case 4:
 						aZombieType = ZOMBIE_POLEVAULTER;
 						break;
-					case 3:
+					case 5:
+					case 6:
 						aZombieType = ZOMBIE_NEWSPAPER;
 						break;
-					case 4:
+					case 7:
+					case 8:
 						aZombieType = ZOMBIE_PAIL;
 						break;
-					case 5:
+					case 9:
+					case 10:
 						aZombieType = ZOMBIE_DOOR;
 						break;
 				}
