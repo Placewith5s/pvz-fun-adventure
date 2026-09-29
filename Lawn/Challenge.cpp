@@ -3200,10 +3200,10 @@ void Challenge::WhackAZombieSpawning()
 		// 在不同阶段下出现路障、铁桶僵尸及出现二、三只僵尸的权重
 		const int aDoubleChance[6] = { 0, 30, 20, 20, 30, 36 };
 		const int aTripleChance[6] = { 0, 0, 0, 0, 20, 26 };
-		const int aDoorChance[6] = { 0, 0, 0, 19, 29, 29 };
-		const int aNewspChance[6] = { 0, 0, 58, 58, 58, 58 };
+		const int aDoorChance[6] = { 0, 0, 0, 10, 15, 15 };
+		//const int aNewspChance[6] = { 0, 0, 58, 58, 58, 58 };
 		const int aPailChance[6] = { 0, 0, 0, 20, 30, 30 };
-		const int aVaulterChance[6] = { 0, 0, 59, 59, 59, 59 };
+		//const int aVaulterChance[6] = { 0, 0, 59, 59, 59, 59 };
 		const int aConeChance[6] = { 0, 0, 60, 60, 60, 60 };
 		// 默认的僵尸数量为 1 只
 		int aZombieCount = 1;
@@ -3214,6 +3214,15 @@ void Challenge::WhackAZombieSpawning()
 		int aTypeHit = Rand(100);
 		// 判断是否为最后一波
 		bool aIsFinalWave = mBoard->mCurrentWave == mBoard->mNumWaves;
+
+		if (mBoard->mCurrentWave >= mBoard->mNumWaves / 2)
+		{
+			aZombieType = ZOMBIE_POLEVAULTER;
+		}
+		else if (mBoard->mCurrentWave >= mBoard->mNumWaves / 1.5)
+		{
+			aZombieType = ZOMBIE_NEWSPAPER;
+		}
 
 		// 确定僵尸数量
 		if (aIsFinalWave)
@@ -3242,14 +3251,14 @@ void Challenge::WhackAZombieSpawning()
 		{
 			aZombieType = ZOMBIE_TRAFFIC_CONE;
 		}
-		else if (aTypeHit < aPailChance[aPhase] + aNewspChance[aPhase])
-		{
-			aZombieType = ZOMBIE_NEWSPAPER;
-		}
-		else if (aTypeHit < aPailChance[aPhase] + aVaulterChance[aPhase])
-		{
-			aZombieType = ZOMBIE_POLEVAULTER;
-		}
+		//else if (aTypeHit < aPailChance[aPhase] + aNewspChance[aPhase])
+		//{
+		//	aZombieType = ZOMBIE_NEWSPAPER;
+		//}
+		//else if (aTypeHit < aPailChance[aPhase] + aVaulterChance[aPhase])
+		//{
+		//	aZombieType = ZOMBIE_POLEVAULTER;
+		//}
 
 		TodWeightedArray<GridItem*> aGridPicks[MAX_GRAVE_STONES];
 		int aGridPicksCount = 0;
