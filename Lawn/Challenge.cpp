@@ -1278,7 +1278,8 @@ void Challenge::MouseDownWhackAZombie(int theX, int theY)
 
 	if (aTopZombie)
 	{
-		if (aTopZombie->mHelmType != HELMTYPE_NONE)
+		if (aTopZombie->mHelmType != HELMTYPE_NONE ||
+			aTopZombie->mShieldType != SHIELDTYPE_NONE)
 		{
 			if (aTopZombie->mHelmType == HELMTYPE_BUCKET)
 			{
