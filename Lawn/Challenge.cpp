@@ -1278,18 +1278,29 @@ void Challenge::MouseDownWhackAZombie(int theX, int theY)
 
 	if (aTopZombie)
 	{
-		if (aTopZombie->mHelmType != HELMTYPE_NONE)
+		if (aTopZombie->mHelmType != HELMTYPE_NONE ||
+			aTopZombie->mShieldType != SHIELDTYPE_NONE)
 		{
 			if (aTopZombie->mHelmType == HELMTYPE_BUCKET)
 			{
 				mApp->PlayFoley(FOLEY_SHIELD_HIT);
+				aTopZombie->TakeHelmDamage(900, 0U);
+			}
+			else if (aTopZombie->mShieldType == SHIELDTYPE_DOOR)
+			{
+				mApp->PlayFoley(FOLEY_SHIELD_HIT);
+				aTopZombie->TakeShieldDamage(900, 0U);
 			}
 			else if (aTopZombie->mHelmType == HELMTYPE_TRAFFIC_CONE)
 			{
 				mApp->PlayFoley(FOLEY_PLASTIC_HIT);
+				aTopZombie->TakeHelmDamage(900, 0U);
 			}
-
-			aTopZombie->TakeHelmDamage(900, 0U);
+			else if (aTopZombie->mShieldType == SHIELDTYPE_NEWSPAPER)
+			{
+				mApp->PlayFoley(FOLEY_NEWSPAPER_RIP);
+				aTopZombie->TakeShieldDamage(900, 0U);
+			}
 		}
 		else
 		{
