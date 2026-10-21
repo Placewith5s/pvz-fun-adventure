@@ -3017,6 +3017,31 @@ void Challenge::InitZombieWaves()
 		aList[ZOMBIE_CATAPULT] = true;
 		aList[ZOMBIE_GARGANTUAR] = true;
 	}
+	else if (mApp->mGameMode == GameMode::GAMEMODE_CHALLENGE_SEEING_STARS)
+	{
+		aList[ZOMBIE_NORMAL] = true;
+		aList[ZOMBIE_TRAFFIC_CONE] = true;
+		aList[ZOMBIE_POLEVAULTER] = true;
+		aList[ZOMBIE_PAIL] = true;
+
+		aList[ZOMBIE_NEWSPAPER] = true;
+		aList[ZOMBIE_DOOR] = true;
+		aList[ZOMBIE_FOOTBALL] = true;
+		aList[ZOMBIE_DANCER] = true;
+
+		aList[ZOMBIE_ZAMBONI] = true;
+		aList[ZOMBIE_BOBSLED] = true;
+
+		aList[ZOMBIE_JACK_IN_THE_BOX] = true;
+		aList[ZOMBIE_BALLOON] = true;
+		aList[ZOMBIE_DIGGER] = true;
+		aList[ZOMBIE_POGO] = true;
+
+		aList[ZOMBIE_BUNGEE] = true;
+		aList[ZOMBIE_LADDER] = true;
+		aList[ZOMBIE_CATAPULT] = true;
+		aList[ZOMBIE_GARGANTUAR] = true;
+	}
 	else if (mApp->IsStormyNightLevel())
 	{
 		aList[ZOMBIE_NORMAL] = true;
